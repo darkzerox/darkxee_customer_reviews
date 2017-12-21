@@ -1,0 +1,16 @@
+.getstar {
+    color: orange;
+}
+
+ul.customer-rev {
+    list-style: none;
+}
+
+ul.customer-rev li {
+    float: left;
+    width: 15%;
+    box-sizing: border-box;
+}
+.rev-contener {
+    margin: 10px;
+}
