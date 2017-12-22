@@ -8,9 +8,67 @@ ul.customer-rev {
 
 ul.customer-rev li {
     float: left;
-    width: 15%;
+    width: 33.33333%;
     box-sizing: border-box;
 }
 .rev-contener {
     margin: 10px;
+}
+.customer-rev-pop {
+    position: fixed;
+    z-index: 9999999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.86);
+    display: table;
+}
+
+.customer-rev-connenner {
+    max-width: 800px;
+    margin: auto;
+    display: table;
+    vertical-align: middle;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.customer-rev-title {
+    text-align: center;
+    font-size: 25px;
+    color: #fff;
+}
+.customer-rev-detail {
+    color: #fff;
+    text-align: center;
+}
+
+.customer-rev-close {
+    display: block;
+    width: 32px;
+    height: 32px;
+    text-align: center;
+    border-radius: 50%;
+    border: solid 2px #fff;
+    line-height: 0;
+    color: #fff;
+    padding: 5px;
+    font-size: 18px;
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    cursor: pointer;
+    z-index: 9999999;
+}
+.rev-img {
+    cursor: pointer;
+}
+.customer-rev-shadow {
+    display: table;
+    width: 100%;
+    height: 100%;
+    
 }
