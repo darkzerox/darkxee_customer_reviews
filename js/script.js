@@ -15,8 +15,6 @@
             var title = $this.find('h3').text();
             var detail = $this.find('.rev-detail').text();
 
-            // console.log(img + title + detail);
-
             var skele = `            
             <div class="customer-rev-pop">
             <div class="customer-rev-shadow"></div>
@@ -35,18 +33,9 @@
             </div>       
         `;
         $('body').append($(skele).hide().fadeIn(200));
-
-
-
-            // console.log($this.text());
-
             $('.customer-rev-close , .customer-rev-shadow').click(function () {
                 $('.customer-rev-pop').fadeOutAndRemove('fast');
             });
-          
-
         });
     });
-
-
 })(jQuery, jQuery(window), jQuery(document));
