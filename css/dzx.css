@@ -4,6 +4,7 @@
 
 ul.customer-rev {
     list-style: none;
+    margin:0;
 }
 
 ul.customer-rev li {
@@ -11,9 +12,11 @@ ul.customer-rev li {
     width: 33.33333%;
     box-sizing: border-box;
 }
+
 .rev-contener {
     margin: 10px;
 }
+
 .customer-rev-pop {
     position: fixed;
     z-index: 9999999;
@@ -41,6 +44,7 @@ ul.customer-rev li {
     font-size: 25px;
     color: #fff;
 }
+
 .customer-rev-detail {
     color: #fff;
     text-align: center;
@@ -63,12 +67,57 @@ ul.customer-rev li {
     cursor: pointer;
     z-index: 9999999;
 }
+
 .rev-img {
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
 }
+.hover-shadow {
+    position: absolute;
+    display: block;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    
+    opacity: 0;
+   
+}
+.rev-img:hover .hover-shadow {
+
+     -webkit-transition: opacity .2s ease-in-out;
+     -moz-transition: opacity .2s ease-in-out;
+     -ms-transition: opacity .2s ease-in-out;
+     -o-transition: opacity .2s ease-in-out;
+     opacity: 1;
+}
+
+.hover-shadow i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 30px;
+    transform: translate(-50%,-50%);
+}
+
 .customer-rev-shadow {
     display: table;
     width: 100%;
     height: 100%;
-    
+}
+
+ul.customer-pagei {
+    list-style: none;
+    display: table;
+    width: 100%;
+    margin: 0 20px;
+}
+
+ul.customer-pagei li.previous {
+    float: left;
+}
+
+ul.customer-pagei li.next {
+    float: right;
 }

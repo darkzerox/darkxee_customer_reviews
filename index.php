@@ -9,7 +9,16 @@ Author URI:https://www.darkxee.com
 License: Plugin comes under GPL Licence.
 */
 
-wp_enqueue_script('custom-js', plugins_url( '/js/script.js' , __FILE__ ) , array( 'jquery' ));
+function load_my_script(){
+    wp_register_script('my_script', plugins_url( '/js/script.js' , __FILE__ ) , array( 'jquery' ));
+    wp_register_script('masonry-js', plugins_url( '/js/masonry.pkgd.min.js' , __FILE__ ) , array( 'jquery' ),'1.0',true);
+    wp_enqueue_script( 'my_script' );
+    wp_enqueue_script( 'masonry-js' );
+    
+}
+add_action('wp_enqueue_scripts', 'load_my_script');
+
+
 //wp_localize_script( 'custom-js', 'darkxee', array( 'callurl' => admin_url( 'admin-ajax.php')));
 
 wp_enqueue_style( 'dzx-css', plugins_url('/css/dzx.css', __FILE__) );
@@ -17,6 +26,10 @@ wp_enqueue_style( 'dzx-css', plugins_url('/css/dzx.css', __FILE__) );
 //start html skeleton
 function customer_review($atts){  
     global $wpdb;
+    $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+    
+    // echo 'page: '. $paged ."<br/>";
+
 
     $atts = shortcode_atts(
 		array(
@@ -25,9 +38,14 @@ function customer_review($atts){
             'sku' => '',
             'orderby' => 'star',
             'sort' => 'DESC',            
-            'limit' => '',
+            'limit' => '10',
+            'ispagenavi'=>'',
+            
         ), $atts ,'customer_review' 
-    );
+    ); 
+ 
+    $limitStart = ($atts['limit'] * ($paged-1));
+
     $where = ''; 
     
     if ($atts['start']!= '' || $atts['sku']!= '' ){
@@ -48,10 +66,10 @@ function customer_review($atts){
     $where.= "ORDER BY ".$atts['orderby']." ".$atts['sort'];
     
     if ($atts['limit']!= ''){
-          $where .= ' LIMIT '.$atts['limit'];
+          $where .= ' LIMIT '. (int)$limitStart.','.  (int)$atts['limit'];
     }
 
-    // echo $where;
+    //  echo $where;
     
 
     $datas = $wpdb->get_results("SELECT * FROM wp_customer_review $where");
@@ -59,12 +77,16 @@ function customer_review($atts){
     $html = '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">';
     
     $html .= '<ul class="customer-rev">';
-
+    $pagination = '<ul class="customer-pagei">';
+    $item=0;
     foreach ( $datas as $data ) 
-    {    
+    {
+        $item++; 
         $html .='<li itemprop="review" itemscope itemtype="http://schema.org/Review" id="revId-'.$data->id.'" class="rev-item">';
+        // $html.= '<span>id: '.$data->id.'</span>';
         $html .='<div class="rev-contener">';
         $html .='<div class="rev-img">';
+        $html .='<div class="hover-shadow"><i class="fa fa-search-plus" aria-hidden="true"></i></div>';
         $html .='<img itemprop="image" src="/wp-content/uploads/customer_review/'.$data->img.'"/ alt="'.$data->img_alt.'">';
         $html .='</div>';
         $html .='<h3 class="rev-title" itemprop="name">'.$data->title.'</h3>';
@@ -91,8 +113,25 @@ function customer_review($atts){
         $html .='</li>';
 
     }  
+    if ($paged > 1){
+        $pagination .='<li class="previous"> <a href="'.wp_get_canonical_url().'page/'.((int)$paged-1).'/"><i class="fa fa-caret-left" aria-hidden="true"></i> Previous</a> </li>';
+    }
+    if ($item > 0) {
+        $pagination .='<li class="next"> <a href="'.wp_get_canonical_url().'page/'.((int)$paged+1).'/">Next <i class="fa fa-caret-right" aria-hidden="true"></i></a></li>';
+    }    
+    
+    $pagination .= '</ul>';
     $html.='</ul>';
+    
+    
     echo  $html;
+
+    if ($atts['ispagenavi']){
+        echo $pagination;
+    }
+   
+
+     
   }
 add_shortcode('dzx_customer_review', 'customer_review');
 
@@ -122,6 +161,7 @@ function dzx_plugin_create_db() {
             product_sku varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
             category varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
             review_date date NULL DEFAULT NULL,
+            slocation varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
             priority int(11) NULL DEFAULT 0,
             PRIMARY KEY  (id)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4; ";

@@ -5,8 +5,16 @@
         })
     }
 
-    $(document).ready(function () {
-        
+    $(window).load(function () {
+
+        $('.customer-rev').masonry({
+            // options
+            itemSelector: '.rev-item',
+            
+        });
+
+
+
         $('.rev-item .rev-img').click(function () {
             $this = $(this).parent();
             $('.customer-rev-pop').fadeOutAndRemove('fast');
@@ -32,7 +40,7 @@
                 </div>
             </div>       
         `;
-        $('body').append($(skele).hide().fadeIn(200));
+            $('body').append($(skele).hide().fadeIn(200));
             $('.customer-rev-close , .customer-rev-shadow').click(function () {
                 $('.customer-rev-pop').fadeOutAndRemove('fast');
             });
