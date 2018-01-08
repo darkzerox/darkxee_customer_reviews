@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Customer Review
+Plugin Name: DZX Customer Review
 Plugin URI: https://www.darkxee.com
 Description: Customer Review for seo
 Version: 1.0
@@ -14,6 +14,8 @@ function load_my_script(){
     wp_register_script('masonry-js', plugins_url( '/js/masonry.pkgd.min.js' , __FILE__ ) , array( 'jquery' ),'1.0',true);
     wp_enqueue_script( 'my_script' );
     wp_enqueue_script( 'masonry-js' );
+
+    wp_enqueue_style( 'dzx-css', plugins_url('/css/dzx.css', __FILE__) );
     
 }
 add_action('wp_enqueue_scripts', 'load_my_script');
@@ -21,7 +23,7 @@ add_action('wp_enqueue_scripts', 'load_my_script');
 
 //wp_localize_script( 'custom-js', 'darkxee', array( 'callurl' => admin_url( 'admin-ajax.php')));
 
-wp_enqueue_style( 'dzx-css', plugins_url('/css/dzx.css', __FILE__) );
+
 
 //start html skeleton
 function customer_review($atts){  
@@ -90,8 +92,12 @@ function customer_review($atts){
         $html .='<img itemprop="image" src="/wp-content/uploads/customer_review/'.$data->img.'"/ alt="'.$data->img_alt.'">';
         $html .='</div>';
         $html .='<h3 class="rev-title" itemprop="name">'.$data->title.'</h3>';
-        $html .='<h4><span>by</span>';
-        $html .='<span itemprop="author">'.$data->customer_name.'</span></h4>';
+
+        if ( $data->customer_name != ''){
+            $html .='<h4><span>by </span>';
+            $html .='<span itemprop="author">'.$data->customer_name.'</span></h4>';
+        }
+        
         $html .='<div class="rev-sku">sku: '.$data->product_sku.'</div>';
         $html .='<meta itemprop="datePublished" content="'.$data->review_date.'">'.$data->review_date;
         $html .='    <div itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">';
